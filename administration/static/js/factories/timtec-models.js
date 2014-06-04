@@ -195,6 +195,35 @@
     }]);
 
 
+     /**
+     * PortfolioQuestion model. The Course has many PortfolioQuestion
+     */
+    app.factory('PortfolioQuestion', ['$resource', function($resource){
+        var resourceConfig = {
+            'update': {'method': 'PUT'}
+        };
+        var PortfolioQuestion = $resource('/api/portfolio_question/:id', {'id':'@id'}, resourceConfig);
+        PortfolioQuestion.prototype.saveOrUpdate = function() {
+            return this.id > 0 ? this.$update() : this.$save();
+        };
+        return PortfolioQuestion;
+    }]);
+
+   /**
+     * PortfolioQuestion model. The Course has many PortfolioQuestion
+     */
+    app.factory('PortfolioQuestion', ['$resource', function($resource){
+        var resourceConfig = {
+            'update': {'method': 'PUT'}
+        };
+        var PortfolioQuestion = $resource('/api/portfolio_question/:id', {'id':'@id'}, resourceConfig);
+        PortfolioQuestion.prototype.saveOrUpdate = function() {
+            return this.id > 0 ? this.$update() : this.$save();
+        };
+        return PortfolioQuestion;
+    }]);
+
+
     /**
      * A object that fetch info from Youtube. It expects a video ID and returns
      * a promise that video info will be fetched.
