@@ -18,6 +18,10 @@ urlpatterns = patterns(
     url(r'^courses/(?P<course_id>[1-9][0-9]*)/lessons/new/$', AdminView.as_view(template_name="new_lesson.html")),
     url(r'^courses/(?P<course_id>[1-9][0-9]*)/lessons/(?P<pk>[1-9][0-9]*)/$', AdminView.as_view(template_name="new_lesson.html")),
 
+    # create and edit lesson
+    url(r'^courses/(?P<course_id>[1-9][0-9]*)/portfolios/new/$', AdminView.as_view(template_name="new_portfolio.html")),
+    url(r'^courses/(?P<course_id>[1-9][0-9]*)/portfolios/(?P<pk>[1-9][0-9]*)/$', AdminView.as_view(template_name="new_portfolio.html")),
+
     # messages
     url(r'^course/(?P<course_id>[1-9][0-9]*)/messages/$', AdminView.as_view(template_name="messages.html")),
     url(r'^course/(?P<course_id>[1-9][0-9]*)/message/(?P<message_id>[1-9][0-9]*)$', AdminView.as_view(template_name="message.html")),

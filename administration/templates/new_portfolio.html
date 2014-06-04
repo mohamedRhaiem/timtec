@@ -1,0 +1,48 @@
+{% extends "admin-base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% block js %} {{block.super}}
+<script type="text/javascript" src="{% static 'js/new-course/app.js' %}">// must be the 1º</script>
+<script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}">// must be the 2º</script>
+<script type="text/javascript" src="{% static 'js/filters/text.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/new-course/directives.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/directives/alertPopup.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/directives/contenteditable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/directives/fixedBar.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/directives/markdowneditor.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/directives/sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/new-course/controllers.js' %}"></script>
+{% endblock %}
+
+{% block body_attrs %}
+ng-app="new-course"
+{% endblock %}
+
+
+{% block content %}
+
+<!--  COURSE CONTENT  -->
+<div id="course" class="course-intro" ng-controller="CourseEditController"></div>
+
+
+
+                       {% verbatim %}
+                           <section class="lessons col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div ng-repeat="pq in portfolio_questions">{{ pq.description }} *****************************************************************************************************************************
+                            {{ pq.type }}</div>
+                        </section>
+                      {% endverbatim %}
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
