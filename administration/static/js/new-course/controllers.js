@@ -3,8 +3,8 @@
     var app = angular.module('new-course');
 
     app.controller('CourseEditController',
-        ['$scope', 'Course',  'CourseProfessor', 'Lesson', '$filter', 'youtubePlayerApi', 'VideoData', 'FormUpload',
-        function($scope, Course,  CourseProfessor, Lesson, $filter, youtubePlayerApi, VideoData, FormUpload) {
+        ['$scope', 'Course',  'CourseProfessor', 'Lesson', '$filter', 'youtubePlayerApi', 'VideoData', 'FormUpload', 'PortfolioQuestion' ,
+        function($scope, Course,  CourseProfessor, Lesson, $filter, youtubePlayerApi, VideoData, FormUpload, PortfolioQuestion) {
 
             $scope.errors = {};
             var httpErrors = {
@@ -37,6 +37,10 @@
                     .then(function(){
                         $scope.lessons = Lesson.query({'course__id': match[1]});
                         return $scope.lessons.promise;
+                    })
+                    .then(function(){
+                        $scope.portfolio_questions = PortfolioQuestion.query({'course__id': match[1]});
+                        return $scope.portfolio_questions.promise;
                     })
                     .then(function(){
                         $scope.courseProfessors = CourseProfessor.query({ course: match[1] });
