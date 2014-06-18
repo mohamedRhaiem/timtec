@@ -179,11 +179,76 @@
             });
         }
     ]);
+ /**
+     * Portfolios
+     */
+
+  app.controller('PortfolioQuestionEdit',['$scope', 'PortfolioQuestionDataFactory', '$http', 'youtubePlayerApi',
+        function($scope, PortfolioQuestionDataFactory, $http, youtubePlayerApi){
+            $scope.video = {
+                'name': null,
+                'youtube_id': null,
+                'save': function() {
+                    if(this.youtube_id_temp) {
+                        this.youtube_id = this.youtube_id_temp;
+                        $scope.portfolioquestion.video = this;
+                        $scope.portfolioquestion.$save().then((function(){
+                            youtubePlayerApi.player.cueVideoById(this.youtube_id);
+                        }).bind(this));
+                    }
+                },
+                'reset': function() {
+                    this.youtube_id = $scope.portfolioquestion.video.youtube_id;
+                }
+            };
+
+            $scope.savePortfolioQuestion = function(){
+                $scope.portfolioquestion.$save();
+            };
+
+           PortfolioQuestionDataFactory.then(function(portfolioquestion){
+                $scope.portfolioquestion = portfolioquestion;
+                if($scope.portfolioquestion.video){
+                    $scope.video.name = $scope.portfolioquestion.video.name;
+                    $scope.video.youtube_id = $scope.portfolioquestion.video.youtube_id;
+
+                    youtubePlayerApi.events = {
+                        'onReady': function(player){
+                            player.target.cueVideoById($scope.video.youtube_id);
+                        }
+                    };
+                }
+                youtubePlayerApi.loadPlayer();
+            });
+        }
+    ]);
+
+
+ app.factory('PortfolioQuestionDataFactory', ['$rootScope', '$q', '$resource',
+        function($rootScope, $q, $resource) {
+            var resourceConfig = {
+            'update': {'method': 'PUT'}
+            };
+            var PortfolioQuestion = $resource('/api/portfolio_question/:id', {'id':'@id'}, resourceConfig);
+            var deferred = $q.defer();
+            var antiCache = {
+                ie: (new Date()).getTime().toString(16)
+            };
+            PortfolioQuestion.get(antiCache, function(portfolioquestion){
+                deferred.resolve(portfolioquestion);
+            });
+            return deferred.promise;
+        }
+    ]);
+
 
 
     /**
      * Factories
      */
+
+
+
     app.factory('CourseDataFactory', ['$rootScope', '$q', '$resource',
         function($rootScope, $q, $resource) {
             var Course = $resource('/api/course/:courseSlug/',{'courseSlug': courseSlug});

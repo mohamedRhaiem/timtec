@@ -12,9 +12,11 @@ class Migration(SchemaMigration):
         db.create_table(u'portfolio_portfolioquestion', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('course', self.gf('django.db.models.fields.related.ForeignKey')(related_name='portfolio_questions', to=orm['core.Course'])),
-            ('description', self.gf('django.db.models.fields.TextField')()),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('video', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Video'], null=True, blank=True)),
+            ('status', self.gf('django.db.models.fields.CharField')(default='draft', max_length=64)),
         ))
         db.send_create_signal(u'portfolio', ['PortfolioQuestion'])
 
@@ -24,11 +26,31 @@ class Migration(SchemaMigration):
             ('portfolio_question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['portfolio.PortfolioQuestion'])),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.TimtecUser'])),
             ('timestamp', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('given', self.gf('jsonfield.fields.JSONField')()),
+            ('portfolio_answer_video', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Video'], null=True, blank=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('description', self.gf('django.db.models.fields.TextField')()),
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('status1', self.gf('django.db.models.fields.CharField')(default='draft', max_length=64)),
+            ('status2', self.gf('django.db.models.fields.CharField')(default='highlight', max_length=64)),
         ))
         db.send_create_signal(u'portfolio', ['PortfolioAnswer'])
+
+        # Adding model 'Comment'
+        db.create_table(u'portfolio_comment', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.TimtecUser'])),
+            ('text', self.gf('django.db.models.fields.TextField')()),
+            ('portfolioAnswer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['portfolio.PortfolioAnswer'])),
+            ('created_on', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal(u'portfolio', ['Comment'])
+
+        # Adding model 'Document'
+        db.create_table(u'portfolio_document', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('document_id', self.gf('django.db.models.fields.CharField')(max_length=100)),
+        ))
+        db.send_create_signal(u'portfolio', ['Document'])
 
 
     def backwards(self, orm):
@@ -37,6 +59,12 @@ class Migration(SchemaMigration):
 
         # Deleting model 'PortfolioAnswer'
         db.delete_table(u'portfolio_portfolioanswer')
+
+        # Deleting model 'Comment'
+        db.delete_table(u'portfolio_comment')
+
+        # Deleting model 'Document'
+        db.delete_table(u'portfolio_document')
 
 
     models = {
@@ -124,12 +152,28 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'youtube_id': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'portfolio.comment': {
+            'Meta': {'object_name': 'Comment'},
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'portfolioAnswer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['portfolio.PortfolioAnswer']"}),
+            'text': ('django.db.models.fields.TextField', [], {}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.TimtecUser']"})
+        },
+        u'portfolio.document': {
+            'Meta': {'object_name': 'Document'},
+            'document_id': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         u'portfolio.portfolioanswer': {
             'Meta': {'object_name': 'PortfolioAnswer'},
-            'description': ('django.db.models.fields.TextField', [], {}),
-            'given': ('jsonfield.fields.JSONField', [], {}),
+            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'portfolio_answer_video': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Video']", 'null': 'True', 'blank': 'True'}),
             'portfolio_question': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['portfolio.PortfolioQuestion']"}),
+            'status1': ('django.db.models.fields.CharField', [], {'default': "'draft'", 'max_length': '64'}),
+            'status2': ('django.db.models.fields.CharField', [], {'default': "'highlight'", 'max_length': '64'}),
             'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.TimtecUser']"})
@@ -137,10 +181,12 @@ class Migration(SchemaMigration):
         u'portfolio.portfolioquestion': {
             'Meta': {'object_name': 'PortfolioQuestion'},
             'course': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'portfolio_questions'", 'to': u"orm['core.Course']"}),
-            'description': ('django.db.models.fields.TextField', [], {}),
+            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'status': ('django.db.models.fields.CharField', [], {'default': "'draft'", 'max_length': '64'}),
             'timestamp': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'video': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Video']", 'null': 'True', 'blank': 'True'})
         }
     }
 

@@ -20,4 +20,3 @@ class PortfolioAnswerViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return PortfolioAnswer.objects.filter(user=self.request.user)
-

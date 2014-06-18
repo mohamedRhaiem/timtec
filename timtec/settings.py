@@ -51,6 +51,13 @@ LOGIN_REDIRECT_URL = '/'
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",
                            "allauth.account.auth_backends.AuthenticationBackend")
 
+
+SOUTH_MIGRATION_MODULES = {
+        'taggit': 'taggit.south_migrations',
+    }
+
+
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['localhost']
@@ -332,6 +339,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.DjangoFilterBackend'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
+      #  'rest_framework.permissions.AllowAny',
         'rest_framework.authentication.SessionAuthentication',
     )
 }
@@ -366,6 +374,8 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'core.context_processors.site_settings',
     'timtec.locale_context_processor.locale',
 )
+
+
 
 # Django Suit configuration example
 SUIT_CONFIG = {
@@ -416,6 +426,7 @@ ROOT_URLCONF = 'timtec.urls'
 WSGI_APPLICATION = 'timtec.wsgi.application'
 
 
+
 INSTALLED_APPS = (
     'django_extensions',
     'south',
@@ -443,6 +454,7 @@ INSTALLED_APPS = (
     'course_material',
     'notes',
     'reports',
+    'taggit',
     'portfolio',
     # django-metron
     'metron',

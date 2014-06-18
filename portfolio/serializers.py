@@ -1,5 +1,5 @@
 __author__ = 'dali'
-from .models import PortfolioQuestion, PortfolioAnswer
+from .models import PortfolioQuestion, PortfolioAnswer, Comment
 from rest_framework import serializers
 
 
@@ -8,16 +8,22 @@ class JSONSerializerField(serializers.WritableField):
 
 
 class PortfolioQuestionSerializer(serializers.ModelSerializer):
+
+    thumbnail = serializers.Field(source='thumbnail')
+
     class Meta:
         model = PortfolioQuestion
-        fields = ('id', 'course', 'description', 'timestamp', 'type')
+        fields = ('id', 'course', 'title', 'video', 'thumbnail', 'document', 'description', 'timestamp')
 
 
 class PortfolioAnswerSerializer(serializers.ModelSerializer):
-    given = JSONSerializerField('given')
 
     class Meta:
         model = PortfolioAnswer
-        fields = ('id', 'portfolio_question', 'user', 'timestamp', 'given', 'title', 'description')
 
 
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
