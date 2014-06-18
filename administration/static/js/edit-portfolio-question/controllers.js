@@ -43,7 +43,6 @@
 
 
             $scope.savePortfolioQuestion = function() {
-                $scope.portfolioquestion.video=null;
                     $scope.portfolioquestion.saveOrUpdate()
                     .then(function(){
                         $scope.alert.success('Alterações salvas com sucesso.');
@@ -67,10 +66,7 @@
                     document.location.href = '/admin/courses/{0}'
                                              .format($scope.course.id);
                 }
-
-
                 if(true) {
-
 
                     if($scope.portfolioquestion.id){
                         msg = 'A Portfolio Question do aula "{0}" e todo seu conteúdo foram apagados do sistema.'

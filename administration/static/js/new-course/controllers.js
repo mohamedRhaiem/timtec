@@ -188,55 +188,6 @@
             };
 
 
-     //   $scope.savePortfolioQuestion=function (portfolio_question) {
-      //            if (!portfolio_question) return;
-         //       var copy = angular.copy(portfolio_question);
-
-           //          var portfolioQuestionsToAdd = new PortfolioQuestion({
-             //         'course': $scope.course.id,
-            //          'description': PortfolioQuestion.description,
-            //          'type': PortfolioQuestion.type
-           //     });
-         //      $scope.alert.success('"{0}" foi adicionado a lista de portfolios.');
-         //   $scope.portfolio_question.$save(portfolioQuestionsToAdd);
-          //     $scope.portfolio_questions.push(portfolioQuestionsToAdd);
-          //  PortfolioQuestion.saveOrUpdate(portfolioQuestionsToAdd)
-
-         //   }
-
- // $scope.savePortfolioQuestion = function () {
-  //    var p=new PortfolioQuestion()
-   //// p.type= "jjhjj";
-    //  p.course=$scope.course.id;
-  // p.course.id=1;
-     // console.log("hxshhgguygcdusgcugducdgsucghusdhdgsuc"+test);
-
-
-      //p.id=2;
-   //   p.$save();
-  //  p.saveOrUpdate()
-       //     };
-
-
-
- $scope.savePortfolioQuestion = function (portfolioquestion) {
-  //  portfolioquestion.course=$scope.course.id;
-
-    //  console.log("type"+portfolioquestion.type);
-   //  console.log("description"+portfolioquestion.description);
-   //  console.log(portfolioquestion.portfolio_question_video.name);
-//video.youtube_id=$scope.youtube_id ;
- console.log("Youtube Id"+$scope.youtube_Id);
-     // portfolioquestion.saveOrUpdate();
-   //  $scope.portfolio_questions.push(portfolioquestion)
-            };
-
-
-
-
-
-
-
             $scope.saveLesson = function(lesson) {
                 return lesson.saveOrUpdate()
                     .then(function(){
