@@ -16,7 +16,6 @@
             // vv como faz isso de uma formula angular ?
             var match = document.location.href.match(/courses\/([0-9]+)/);
             $scope.course = new Course();
-            $scope.portfolioquestion=new PortfolioQuestion();
             $scope.courseProfessors = [];
             $scope.lessons = [];
             window.s = $scope

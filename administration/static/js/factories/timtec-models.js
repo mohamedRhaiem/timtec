@@ -198,7 +198,8 @@
      /**
      * PortfolioQuestion model. The Course has many PortfolioQuestion
      */
-    app.factory('PortfolioQuestion', ['$resource', function($resource){
+
+    app.factory('PortfolioQuestion', ['$resource', function($resource) {
         var resourceConfig = {
             'update': {'method': 'PUT'}
         };

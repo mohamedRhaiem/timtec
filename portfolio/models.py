@@ -35,8 +35,8 @@ class PortfolioQuestion(models.Model):
             return thumbnail
         except IndexError:
             return staticfiles_storage.url('img/lesson-default.png')
-        except AttributeError:
-            return staticfiles_storage.url('img/lesson-default.png')
+       # except AttributeError:
+       #     return staticfiles_storage.url('img/lesson-default.png')
 
 
 class PortfolioAnswer(models.Model):

@@ -1,6 +1,14 @@
 __author__ = 'dali'
-from .models import PortfolioQuestion, PortfolioAnswer, Comment
+from core.models import Video
+from .models import PortfolioQuestion, PortfolioAnswer, Comment, Document
 from rest_framework import serializers
+
+
+class VideoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Video
+        fields = ('id', 'name', 'youtube_id',)
 
 
 class JSONSerializerField(serializers.WritableField):
@@ -8,7 +16,7 @@ class JSONSerializerField(serializers.WritableField):
 
 
 class PortfolioQuestionSerializer(serializers.ModelSerializer):
-
+    video = VideoSerializer(required=False)
     thumbnail = serializers.Field(source='thumbnail')
 
     class Meta:

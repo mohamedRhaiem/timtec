@@ -78,8 +78,9 @@ ng-app="edit-portfolio-question"
                 </div>
               </div>
           </header>
-            <div class="row">
-                            <div class="col-lg-8 col-md-11 col-sm-11">
+            <!--PORTFOLIO-QUESTION-VIDEO -->
+        <div class="row">
+                <div class="col-lg-8 col-md-11 col-sm-11">
                     <div class="add-content row" ng-init="section='video'">
                         <div class="col-lg-6">
                             <button class="btn btn-default uppercase"
@@ -96,18 +97,20 @@ ng-app="edit-portfolio-question"
                     <div class="video col-lg-12" ng-show="section === 'video'">
                         <!-- ROW -->
                         <div class="row">
-                            <div class="waiting col-sm-12 col-lg-12 textcenter jumbotron"  style="height: 419px" ng-show="portfolioquestion.video.youtube_id && !playerReady">
+                            <div class="waiting col-sm-12 col-lg-12 textcenter jumbotron"
+                                 style="height: 419px"
+                                 ng-show="portfolioquestion.video.youtube_id && !playerReady">
                                 <div class="middle">
                                     <i class="fa fa-refresh fa-5x"></i>
                                 </div>
                             </div>
 
-                            <!-- ADD-VIDEO-INTRO -->
+                            <!-- ADD-PORTFOLIO-QUESTION -->
                             <div class="add-video-intro col-sm-12 col-lg-12 block textcenter" ng-hide="portfolioquestion.video">
                                 <!-- CENTERED -->
                                 <div class="centered">
                                     <i class="fa fa-youtube-play fa-4x"></i>
-                                    <h1 class="top">{% trans 'Portfolio Question video' %}</h1>
+                                    <h1 class="top">{% trans 'PortfolioQuestion video' %}</h1>
                                     <p class="form-group">
                                         <input type="text" class="form-control" ng-model="portfolioquestion.intended_youtube_id"/>
                                     </p>
@@ -130,24 +133,25 @@ ng-app="edit-portfolio-question"
                                     </div>
                                 </div>
                             </div>
-                            <!-- END ADD-VIDEO-PORTFOLIO -->
+                            <!-- END ADD-VIDEO-PORTFOLIO-QUESTION -->
                         </div>
                         <!-- END ROW -->
                     </div>
                     <!-- END VIDEO SECTION -->
 
-                    <!-- DOCUMENTS SECTION -->
+                    <!-- DOCUMENT SECTION -->
                     <div class="activity col-lg-12" ng-show="section==='document'">
                         <div class="row">
 
                         </div>
                     </div>
-                    <!-- END DOCUMENTS SECTION -->
+                    <!-- END DOCUMENT SECTION -->
                 </div>
 
                 <div id="annotations" class="hidden-md hidden-sm hidden-xs">
                 </div>
             </div>
+                        <!-- END PORTFOLIO-VIDEO -->
             <div class="row">
                 <div class="col-lg-8 col-sm-10 col-lg-offset-1 col-sm-offset-1">
                     <div id="side-notes">

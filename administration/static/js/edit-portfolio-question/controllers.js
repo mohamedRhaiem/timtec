@@ -10,6 +10,11 @@
                 '403': 'Você não tem permissão para ver conteúdo nesta página.',
                 '404': 'Este curso não existe!'
             };
+            $scope.course = new Course();
+
+            $scope.portfolioquestion = new PortfolioQuestion();
+
+            $scope.courseProfessors = [];
 
             // load youtube
             $scope.playerReady = false;
@@ -27,10 +32,18 @@
                 });
             };
 
-            $scope.course = new Course();
-            $scope.portfolioquestion = new PortfolioQuestion();
-
-            $scope.courseProfessors = [];
+             function showFieldErrors(response) {
+                $scope.errors = response.data;
+                var messages = [];
+                for (var att in response.data) {
+                    var message = response.data[att];
+                    if (PortfolioQuestion.fields && PortfolioQuestion.fields[att]) {
+                        message = PortfolioQuestion.fields[att].label + ': ' + message;
+                    }
+                    messages.push(message);
+                }
+                $scope.alert.error('Encontramos alguns erros!', messages, true);
+            }
 
 
             /*  Methods */
@@ -41,16 +54,27 @@
                 document.title = 'Aula: {0}'.format(l.title);
             };
 
-
-            $scope.savePortfolioQuestion = function() {
-                    $scope.portfolioquestion.saveOrUpdate()
-                    .then(function(){
-                        $scope.alert.success('Alterações salvas com sucesso.');
-                    })['catch'](function(resp){
-                        $scope.alert.error(httpErrors[resp.status.toString()]);
-                    });
+            $scope.setPortfolioQuestionVideo = function() {
+                var youtube_id = $scope.portfolioquestion.intended_youtube_id;
+                if(!$scope.portfolioquestion.video) {
+                    $scope.portfolioquestion.video = {};
+                }
+                $scope.portfolioquestion.video.youtube_id = youtube_id;
+                VideoData.load(youtube_id).then(function(data){
+                    $scope.portfolioquestion.video.name = data.entry.title.$t;
+                });
+                $scope.play(youtube_id);
             };
 
+            $scope.savePortfolioQuestion = function () {
+                if (!$scope.portfolioquestion.hasVideo()) {
+                    delete $scope.portfolioquestion.video;
+                }
+                $scope.portfolioquestion.saveOrUpdate()
+                    .then(function () {
+                        $scope.alert.success('Alterações salvas com sucesso!');
+                    })['catch'](showFieldErrors);
+            };
 
             $scope.publishPortfolioQuestion = function() {
                 $scope.portfolioquestion.status = 'published';
@@ -84,20 +108,7 @@
             };
 
 
-             $scope.setPortfolioQuestionVideo = function() {
-                var youtube_id = $scope.portfolioquestion.intended_youtube_id;
-                if(!$scope.portfolioquestion.video) {
-                    $scope.portfolioquestion.video = {};
-                }
-                 $scope.portfolioquestion.video.youtube_id = youtube_id;
-                VideoData.load(youtube_id).then(function(data){
-                 $scope.portfolioquestion.video.name = data.entry.title.$t;
 
-
-                });
-
-                $scope.play(youtube_id);
-            };
    /*  End Methods */
 
 
@@ -120,6 +131,8 @@
                         return $scope.courseProfessors.$promise;
                     });
 
+
+
                 PortfolioQuestion.query({course__id: match[1]}).$promise
                     .then(function(portfolio_questions){
                         $scope.portfolio_questions = portfolio_questions;
@@ -132,7 +145,6 @@
                             }
                         });
                         if($scope.isNewPortfolioQuestion) {
-
 
                             $scope.portfolio_questions.push($scope.portfolioquestion);
                         }
