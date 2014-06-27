@@ -1,7 +1,7 @@
 (function(angular){
 
-    var app = angular.module('edit-portfolio-question');
 
+    var app = angular.module('edit-portfolio-question');
     app.controller('EditPortfolioQuestionController', ['$scope', 'Course', 'CourseProfessor', 'VideoData', 'youtubePlayerApi', 'MarkdownDirective', 'waitingScreen','PortfolioQuestion',
         function($scope, Course, CourseProfessor, VideoData, youtubePlayerApi, MarkdownDirective, waitingScreen, PortfolioQuestion){
             $scope.errors = {};
@@ -16,6 +16,7 @@
 
             $scope.courseProfessors = [];
 
+
             // load youtube
             $scope.playerReady = false;
             youtubePlayerApi.loadPlayer().then(function(p){
@@ -23,7 +24,9 @@
             });
 
             // show the waiting screen
+
             waitingScreen.show();
+
 
             $scope.play = function(youtube_id) {
                 youtubePlayerApi.loadPlayer().then(function(player){
@@ -61,10 +64,43 @@
                 }
                 $scope.portfolioquestion.video.youtube_id = youtube_id;
                 VideoData.load(youtube_id).then(function(data){
+
                     $scope.portfolioquestion.video.name = data.entry.title.$t;
                 });
                 $scope.play(youtube_id);
             };
+
+            /* Portfolio Document */
+
+            $scope.setPortfolioQuestionDocument=function(){
+                var document_id = $scope.portfolioquestion.intended_document_id;
+                var document_name = $scope.portfolioquestion.intended_document_name;
+                if(!$scope.portfolioquestion.document) {
+                    $scope.portfolioquestion.document = {};
+                }
+                $scope.portfolioquestion.document.document_id = document_id;
+                $scope.portfolioquestion.document.name = document_name;
+                $scope.scroll = 0;
+                $scope.pdfName = document_name;
+                $scope.pdfUrl =  document_id;
+
+            }
+
+
+
+ $scope.init = function () {
+     $scope.scroll = 0;
+
+     $scope.pdfName = 'Relativity: The Special and General Theory by Albert Einstein';
+     $scope.pdfUrl = 'http://fastandfluid.com/publicdownloads/AngularJSIn60MinutesIsh_DanWahlin_May2013.pdf';
+
+
+ }
+    $scope.getNavStyle = function(scroll) {
+    if(scroll > 100) return 'pdf-controls fixed';
+    else return 'pdf-controls';
+    }
+
 
             $scope.savePortfolioQuestion = function () {
                 if (!$scope.portfolioquestion.hasVideo()) {
@@ -127,7 +163,6 @@
                         $scope.messages_url = 'admin/course/' + course.id   + '/messages/';
                         $scope.reports_url = 'admin/course/' + course.id   + '/stats/';
 
-
                         return $scope.courseProfessors.$promise;
                     });
 
@@ -135,11 +170,13 @@
 
                 PortfolioQuestion.query({course__id: match[1]}).$promise
                     .then(function(portfolio_questions){
+
                         $scope.portfolio_questions = portfolio_questions;
                         portfolio_questions.forEach(function(portfolioquestion){
                             if(portfolioquestion.id === parseInt(match[2], 10)) {
                                 if (portfolioquestion.video) {
                             youtubePlayerApi.videoId = portfolioquestion.video.youtube_id;
+
                         }
                                 $scope.setPortfolioQuestion(portfolioquestion);
                             }
@@ -157,6 +194,24 @@
             // ^^ como faz isso de uma formula angular ?
         }
     ]);
+
+
+
+  /*  app.controller('DocCtrl', function($scope) {
+    $scope.init = function () {
+
+    $scope.pdfName = 'Relativity: The Special and General Theory by Albert Einstein';
+
+    $scope.pdfUrl = 'http://fastandfluid.com/publicdownloads/AngularJSIn60MinutesIsh_DanWahlin_May2013.pdf';
+    $scope.scroll = 0;
+                               }
+    $scope.getNavStyle = function(scroll) {
+    if(scroll > 100) return 'pdf-controls fixed';
+    else return 'pdf-controls';
+    }
+
+   });*/
+
 
 
 })(window.angular);

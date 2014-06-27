@@ -335,10 +335,9 @@ ng-app="new-course"
                                     <a {% verbatim %}href="portfolios/{{pq.id}}"{% endverbatim %} class="title editable" ng-bind="pq.title">{% trans 'Portfolio Question name' %}</a>
                                     <p>
                                         <h1 class="title editable" ng-bind="pq.title">{% trans 'Portfolio name' %}<span class="text-muted">&raquo; </span></h1> <modalmarkdowneditor on-save="savePortfolioQuestion(pq)" title="{% trans 'Portfolio description' %}" content="pq.description"></modalmarkdowneditor>
-                                        <h1  class="title editable" ng-bind="pq.title">{% trans 'Portfolio name' %}</h1>&raquo;
-                                        <modalmarkdowneditor on-save="savePortfolioQuestion(pq)" title="{% trans 'Portfolio description' %}" content="pq.description"></modalmarkdowneditor>
-                                         <modalmarkdowneditor on-save="savePortfolioQuestion(pq)" title="{% trans 'Created on' %}" content="pq.timestamp"></modalmarkdowneditor>
-                                         <modalmarkdowneditor on-save="savePortfolioQuestion(pq)" title="{% trans 'Portfolio description' %}" content="pq.description"></modalmarkdowneditor>
+                                    <h1 class="title editable" ng-bind="pq.document.name"></h1>
+                                         <modalmarkdowneditor on-save="savePortfolioQuestion(pq)" title="{% trans 'Created on' %}" content="pq.document.document_id"></modalmarkdowneditor>
+
 
                                     </p>
 

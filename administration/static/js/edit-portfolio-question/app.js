@@ -12,6 +12,9 @@
         'directive.markdowneditor',
         // 'directive.sortable',
         // 'filters.text',
-        'youtube'
+        'youtube',
+        'pdf'
+        //'cgBusy'
+
     ]);
 })(window.angular);

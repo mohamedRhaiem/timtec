@@ -153,6 +153,7 @@ PIPELINE_CSS = {
             'codemirror/addon/hint/show-hint.css',
             'codemirror/theme/monokai.css',
             'css/codemirrorconf.css',
+           # 'css/pdfview.css',
         ),
         'output_filename': 'css/common.css',
         'extra_context': {
@@ -162,6 +163,7 @@ PIPELINE_CSS = {
     'public': {
         'source_filenames': (
             'css/main.less',
+
         ),
         'output_filename': 'css/public.css',
         'extra_context': {
@@ -179,6 +181,7 @@ PIPELINE_JS = {
             'jquery-ui/ui/jquery.ui.sortable.js',
             'bootstrap/dist/js/bootstrap.js',
             'angular/angular.js',
+            'angular-busy/angular-busy.js',
             'angular-animate/angular-animate.js',
             'angular-cookies/angular-cookies.js',
             'angular-resource/angular-resource.js',
@@ -186,6 +189,9 @@ PIPELINE_JS = {
             'angular-sanitize/angular-sanitize.js',
             'angular-bootstrap/ui-bootstrap-tpls.js',
             'angular-gettext/dist/angular-gettext.js',
+            'angular-pdf/dist/angular-pdf.js',
+            'angular-pdf/example/js/lib/pdf.js',
+            'angular-pdf/example/js/lib/pdf.worker.js',
             'js/consolelogfallback.js',
             'js/django.js',
             'js/contact_form.js',

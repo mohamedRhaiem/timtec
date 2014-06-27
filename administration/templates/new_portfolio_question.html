@@ -3,6 +3,8 @@
 {% load i18n %}
 
 {% block js %} {{block.super}}
+
+
 <script type="text/javascript" src="{% static 'js/edit-portfolio-question/app.js' %}">// must be the 1º</script>
 <script type="text/javascript" src="{% static 'js/factories/timtec-models.js' %}">// must be the 2º</script>
 <script type="text/javascript" src="{% static 'js/filters/text.js' %}"></script>
@@ -13,7 +15,7 @@
 <script type="text/javascript" src="{% static 'js/directives/markdowneditor.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/directives/codemirror.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/directives/sortable.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/edit-portfolio-question/controllers.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/edit-portfolio-question/controllers.js' %}">// must be the 1º</script>
 {% endblock %}
 
 {% block body_attrs %}
@@ -23,6 +25,7 @@ ng-app="edit-portfolio-question"
 
 {% block content %}
 <!-- COURSE-CONTENT -->
+<div  cg-busy="myPromise">
 <div id="course" class="course-lesson" ng-controller="EditPortfolioQuestionController">
 
     <div class="illust hidden-xs"></div><!-- .illust // top ilustration -->
@@ -30,8 +33,10 @@ ng-app="edit-portfolio-question"
     <div class="main-content">
 
         <!-- ACTIONS -->
+
         <div class="actions">
             <div class="container">
+                <div  cg-busy="myPromise">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-4">
                         <button class="btn btn-danger" ng-click="deletePortfolioQuestion()"><i class="fa fa-trash-o"></i> | {% trans 'Delete this portfolio question' %}</button>
@@ -40,6 +45,7 @@ ng-app="edit-portfolio-question"
                         <button class="btn btn-success" ng-click="savePortfolioQuestion()">{% trans 'Save' %} | <i class="fa fa-save"></i></button>
                         <button class="btn btn-warning" ng-click="publishPortfolioQuestion();">{% trans 'Publish portfolio question' %} | <i class="fa fa-star-o"></i></button>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -141,9 +147,53 @@ ng-app="edit-portfolio-question"
 
                     <!-- DOCUMENT SECTION -->
                     <div class="activity col-lg-12" ng-show="section==='document'">
+                         <!-- ROW -->
                         <div class="row">
+                            <div class=" col-sm-12 col-lg-12 textcenter jumbotron"
+                                 style="height: 419px"
+                                 ng-show="portfolioquestion.document.document_id && !pdfReady">
+                                <div class="middle" >
 
+                                   <div class="wrapper1" style="height: 300px;overflow-y: scroll;border: 1px solid grey;">
+                                           <ng-pdf  template-url="/static/templates/viewer.html" ng-init="init()" canvasid="pdf" scale="1"></ng-pdf>
+                                   </div>
+
+                                </div>
+                            </div>
+
+                            <!-- ADD-PORTFOLIO-QUESTION -->
+                            <div class="add-video-intro col-sm-12 col-lg-12 block textcenter" ng-hide="portfolioquestion.document">
+                                <!-- CENTERED -->
+                                <div class="centered">
+
+                                    <h1 class="top">{% trans 'PortfolioQuestion document' %}</h1>
+                                    <p class="form-group">
+                                        <input type="text" class="form-control" ng-model="portfolioquestion.intended_document_name" placeholder="Document name"/>
+                                        <input type="text" class="form-control" ng-model="portfolioquestion.intended_document_id" placeholder="Document URL"/>
+                                    </p>
+
+                                        <button class="btn btn-danger btn-lg uppercase" ng-click="portfolioquestion.intended_document_id=''">{% trans 'Cancel' %}</button>
+                                        <button class="btn btn-success btn-lg uppercase" ng-click="setPortfolioQuestionDocument()">{% trans 'Add' %}</button>
+
+                                </div>
+                                <!-- END CENTERED -->
+                            </div>
+                             <div class="col-lg-12 left right" style="overflow:hidden;" ng-style="{'display': portfolioquestion.video}">
+                                <div id="youtube-player" player-height="419px" player-width="100%" youtube-player></div>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <p class="video-title" ng-model="portfolioquestion.document.name" placeholder="Nome do Document" contenteditable><p>
+                                    </div>
+                                    <div class="col-lg-4 textright">
+                                        <button class="btn-edit-video btn btn-success btn-sm uppercase" ng-click="portfolioquestion.document = null">{% trans 'Change document' %}</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- END ADD-VIDEO-PORTFOLIO-QUESTION -->
                         </div>
+                        <!-- END ROW -->
                     </div>
                     <!-- END DOCUMENT SECTION -->
                 </div>
@@ -151,6 +201,7 @@ ng-app="edit-portfolio-question"
                 <div id="annotations" class="hidden-md hidden-sm hidden-xs">
                 </div>
             </div>
+
                         <!-- END PORTFOLIO-VIDEO -->
             <div class="row">
                 <div class="col-lg-8 col-sm-10 col-lg-offset-1 col-sm-offset-1">
@@ -164,8 +215,8 @@ ng-app="edit-portfolio-question"
     </div>
 
 </div>
+</div>
 <!-- END COURSE-CONTENT -->
-
 <div class="tt-popup notifications hidden" alert-popup ng-class="{'hideTop': alert.hidden}">
     <div class="alert fade in" ng-class="'alert-' + alert.type">
         <button type="button" class="close" ng-click="alert.hidden=true">×</button>
